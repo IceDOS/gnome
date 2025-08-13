@@ -16,15 +16,15 @@ weekday = true # Show the day of the week on the clock
 dynamicWorkspaces = true
 maxWorkspaces = 1 # Determines the maximum number of workspaces when dynamic workspaces are disabled
 
-[icedos.system.users.username.desktop.gnome]
+[icedos.desktop.gnome.users.username]
 startupScript = "notify-send hello"
 
-[icedos.system.users.username.desktop.gnome.pinnedApps.arcmenu]
+[icedos.desktop.gnome.users.username.pinnedApps.arcmenu]
 enable = true
 list = ["codiumIDE.desktop", "codium.desktop"]
 
 # Set pinned apps for gnome shell (will be used by dash-to-panel if enabled)
-[icedos.system.users.username.desktop.gnome.pinnedApps.shell]
+[icedos.desktop.gnome.users.username.pinnedApps.shell]
 enable = true
 list = [
   "steam.desktop",

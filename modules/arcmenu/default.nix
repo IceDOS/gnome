@@ -18,22 +18,27 @@ mkIf (cfg.desktop.gnome.extensions.arcmenu) {
         enabled-extensions = [ "arcmenu@arcmenu.com" ];
       };
 
-      "org/gnome/shell/extensions/arcmenu" = {
-        distro-icon = 6;
-        menu-button-icon = "Distro_Icon"; # Use arch icon
-        multi-monitor = true;
-        menu-layout = "Windows";
-        windows-disable-frequent-apps = true;
-        windows-disable-pinned-apps = !cfg.system.users.${user}.desktop.gnome.pinnedApps.arcmenu.enable;
-        pinned-apps =
-          with inputs.home-manager.lib.hm.gvariant;
-          (map (s: [
-            (mkDictionaryEntry [
-              "id"
-              s
-            ])
-          ]) cfg.system.users.${user}.desktop.gnome.pinnedApps.arcmenu.list);
-      };
+      "org/gnome/shell/extensions/arcmenu" =
+        let
+          arcmenu = user.pinnedApps.arcmenu;
+          user = cfg.desktop.gnome.users.${user};
+        in
+        {
+          distro-icon = 6;
+          menu-button-icon = "Distro_Icon"; # Use arch icon
+          multi-monitor = true;
+          menu-layout = "Windows";
+          windows-disable-frequent-apps = true;
+          windows-disable-pinned-apps = !arcmenu.enable;
+          pinned-apps =
+            with inputs.home-manager.lib.hm.gvariant;
+            (map (s: [
+              (mkDictionaryEntry [
+                "id"
+                s
+              ])
+            ]) arcmenu.list);
+        };
     };
-  }) cfg.system.users;
+  }) cfg.users;
 }

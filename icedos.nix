@@ -10,49 +10,47 @@ let
     ;
 in
 {
-  options.icedos =
+  options.icedos.desktop.gnome =
     let
       gnome = (fromTOML (lib.fileContents ./config.toml)).icedos.desktop.gnome;
     in
     {
-      desktop.gnome = {
-        accentColor = mkStrOption { default = gnome.accentColor; };
+      accentColor = mkStrOption { default = gnome.accentColor; };
 
-        extensions = {
-          arcmenu = mkBoolOption { default = false; };
-          dashToPanel = mkBoolOption { default = false; };
-        };
-
-        clock = {
-          date = mkBoolOption { default = false; };
-          weekday = mkBoolOption { default = false; };
-        };
-
-        hotCorners = mkBoolOption { default = false; };
-        powerButtonAction = mkStrOption { default = gnome.powerButtonAction; };
-        titlebarLayout = mkStrOption { default = gnome.titlebarLayout; };
-
-        workspaces = {
-          dynamicWorkspaces = mkBoolOption { default = true; };
-          maxWorkspaces = mkNumberOption { default = 1; };
-        };
+      extensions = {
+        arcmenu = mkBoolOption { default = false; };
+        dashToPanel = mkBoolOption { default = false; };
       };
 
-      system.users = mkSubmoduleAttrsOption { } {
+      clock = {
+        date = mkBoolOption { default = false; };
+        weekday = mkBoolOption { default = false; };
+      };
+
+      hotCorners = mkBoolOption { default = false; };
+      powerButtonAction = mkStrOption { default = gnome.powerButtonAction; };
+      titlebarLayout = mkStrOption { default = gnome.titlebarLayout; };
+
+      workspaces = {
+        dynamicWorkspaces = mkBoolOption { default = true; };
+        maxWorkspaces = mkNumberOption { default = 1; };
+      };
+
+      users = mkSubmoduleAttrsOption { default = [ ]; } {
         desktop.gnome = {
           pinnedApps = {
             arcmenu = {
-              enable = mkBoolOption { };
-              list = mkStrListOption { };
+              enable = mkBoolOption { default = false; };
+              list = mkStrListOption { default = [ ]; };
             };
 
             shell = {
-              enable = mkBoolOption { };
-              list = mkStrListOption { };
+              enable = mkBoolOption { default = false; };
+              list = mkStrListOption { default = [ ]; };
             };
           };
 
-          startupScript = mkStrOption { };
+          startupScript = mkStrOption { default = ""; };
         };
       };
     };

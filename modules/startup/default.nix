@@ -13,7 +13,7 @@ in
   home-manager.users = mapAttrs (
     user: _:
     let
-      startupScript = cfg.system.users.${user}.desktop.gnome.startupScript;
+      startupScript = cfg.desktop.gnome.users.${user}.startupScript;
     in
     {
       home.file = {
@@ -40,5 +40,5 @@ in
         };
       };
     }
-  ) cfg.system.users;
+  ) cfg.users;
 }

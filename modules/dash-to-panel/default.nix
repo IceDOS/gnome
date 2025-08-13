@@ -54,5 +54,5 @@ mkIf (cfg.desktop.gnome.extensions.dashToPanel) {
         hot-keys = true;
       };
     };
-  }) cfg.system.users;
+  }) cfg.users;
 }
