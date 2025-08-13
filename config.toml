@@ -1,0 +1,34 @@
+[icedos.desktop.gnome]
+accentColor = "purple" # Options: 'blue', 'teal', 'green', 'yellow', 'orange', 'red', 'pink', 'purple', 'slate'
+hotCorners = true
+powerButtonAction = "interactive"
+titlebarLayout = "appmenu:close" # Options: 'minimize', 'maximize', 'close', 'spacer'(adds space between buttons), ':'(left-center-right separator)
+
+[icedos.desktop.gnome.extensions]
+arcmenu = true
+dashToPanel = true
+
+[icedos.desktop.gnome.clock]
+date = true # Show the month and day of the month on the clock
+weekday = true # Show the day of the week on the clock
+
+[icedos.desktop.gnome.workspaces]
+dynamicWorkspaces = true
+maxWorkspaces = 1 # Determines the maximum number of workspaces when dynamic workspaces are disabled
+
+[icedos.system.users.username.desktop.gnome]
+startupScript = "notify-send hello"
+
+[icedos.system.users.username.desktop.gnome.pinnedApps.arcmenu]
+enable = true
+list = ["codiumIDE.desktop", "codium.desktop"]
+
+# Set pinned apps for gnome shell (will be used by dash-to-panel if enabled)
+[icedos.system.users.username.desktop.gnome.pinnedApps.shell]
+enable = true
+list = [
+  "steam.desktop",
+  "webcord.desktop",
+  "signal-desktop.desktop",
+  "librewolf.desktop",
+]
