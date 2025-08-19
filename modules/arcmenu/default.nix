@@ -20,8 +20,8 @@ mkIf (cfg.desktop.gnome.extensions.arcmenu) {
 
       "org/gnome/shell/extensions/arcmenu" =
         let
-          arcmenu = user.pinnedApps.arcmenu;
-          user = cfg.desktop.gnome.users.${user};
+          arcmenu = gnomeUser.pinnedApps.arcmenu;
+          gnomeUser = cfg.desktop.gnome.users.${user};
         in
         {
           distro-icon = 6;

@@ -37,21 +37,19 @@ in
       };
 
       users = mkSubmoduleAttrsOption { default = [ ]; } {
-        desktop.gnome = {
-          pinnedApps = {
-            arcmenu = {
-              enable = mkBoolOption { default = false; };
-              list = mkStrListOption { default = [ ]; };
-            };
-
-            shell = {
-              enable = mkBoolOption { default = false; };
-              list = mkStrListOption { default = [ ]; };
-            };
+        pinnedApps = {
+          arcmenu = {
+            enable = mkBoolOption { default = false; };
+            list = mkStrListOption { default = [ ]; };
           };
 
-          startupScript = mkStrOption { default = ""; };
+          shell = {
+            enable = mkBoolOption { default = false; };
+            list = mkStrListOption { default = [ ]; };
+          };
         };
+
+        startupScript = mkStrOption { default = ""; };
       };
     };
 

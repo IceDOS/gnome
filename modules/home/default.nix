@@ -13,7 +13,7 @@ in
     dconf.settings =
       let
         idle = cfg.desktop.users.${user}.idle;
-        user = cfg.desktop.gnome.users.${user};
+        gnomeUser = cfg.desktop.gnome.users.${user};
       in
       {
         "org/gnome/desktop/input-sources" = {
@@ -89,7 +89,7 @@ in
           disable-user-extensions = false;
           enabled-extensions = [ "user-theme@gnome-shell-extensions.gcampax.github.com" ];
 
-          favorite-apps = mkIf (user.pinnedApps.shell.enable) user.pinnedApps.shell.list;
+          favorite-apps = mkIf (gnomeUser.pinnedApps.shell.enable) gnomeUser.pinnedApps.shell.list;
         };
 
         "org/gnome/shell/keybindings" = {
