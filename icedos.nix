@@ -80,6 +80,7 @@ in
 
           environment.gnome.excludePackages = with pkgs; [
             cheese # Camera
+            decibels # Audio player
             eog # Image viewer
             epiphany # Web browser
             evince # Document viewer
