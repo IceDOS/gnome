@@ -105,5 +105,13 @@ in
       )
     ];
 
-  meta.name = "default";
+  meta = {
+    name = "default";
+
+    dependencies = [
+      {
+        url = "github:icedos/desktop";
+      }
+    ];
+  };
 }
