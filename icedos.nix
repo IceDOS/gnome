@@ -108,9 +108,10 @@ in
   meta = {
     name = "default";
 
-    dependencies = [
+    optionalDependencies = [
       {
         url = "github:icedos/desktop";
+        modules = ["gdm"];
       }
     ];
   };
