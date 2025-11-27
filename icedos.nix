@@ -48,8 +48,6 @@ in
             list = mkStrListOption { default = [ ]; };
           };
         };
-
-        startupScript = mkStrOption { default = ""; };
       };
     };
 

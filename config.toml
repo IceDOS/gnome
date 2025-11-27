@@ -16,9 +16,6 @@ weekday = true # Show the day of the week on the clock
 dynamicWorkspaces = true
 maxWorkspaces = 1 # Determines the maximum number of workspaces when dynamic workspaces are disabled
 
-[icedos.desktop.gnome.users.username]
-startupScript = "notify-send hello"
-
 [icedos.desktop.gnome.users.username.pinnedApps.arcmenu]
 enable = true
 list = ["codiumIDE.desktop", "codium.desktop"]
