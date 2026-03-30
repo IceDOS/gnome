@@ -12,43 +12,58 @@ in
 {
   options.icedos.desktop.gnome =
     let
-      gnome = (fromTOML (lib.fileContents ./config.toml)).icedos.desktop.gnome;
+      inherit (lib) readFile;
+
+      inherit ((fromTOML (readFile ./config.toml)).icedos.desktop.gnome)
+        accentColor
+        clock
+        extensions
+        hotCorners
+        powerButtonAction
+        titlebarLayout
+        users
+        workspaces
+        ;
     in
     {
-      accentColor = mkStrOption { default = gnome.accentColor; };
+      accentColor = mkStrOption { default = accentColor; };
 
       extensions = {
-        arcmenu = mkBoolOption { default = false; };
-        dashToPanel = mkBoolOption { default = false; };
+        arcmenu = mkBoolOption { default = extensions.arcmenu; };
+        dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
       };
 
       clock = {
-        date = mkBoolOption { default = false; };
-        weekday = mkBoolOption { default = false; };
+        date = mkBoolOption { default = clock.date; };
+        weekday = mkBoolOption { default = clock.weekday; };
       };
 
-      hotCorners = mkBoolOption { default = false; };
-      powerButtonAction = mkStrOption { default = gnome.powerButtonAction; };
-      titlebarLayout = mkStrOption { default = gnome.titlebarLayout; };
+      hotCorners = mkBoolOption { default = hotCorners; };
+      powerButtonAction = mkStrOption { default = powerButtonAction; };
+      titlebarLayout = mkStrOption { default = titlebarLayout; };
 
       workspaces = {
-        dynamicWorkspaces = mkBoolOption { default = true; };
-        maxWorkspaces = mkNumberOption { default = 1; };
+        dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };
+        maxWorkspaces = mkNumberOption { default = workspaces.maxWorkspaces; };
       };
 
-      users = mkSubmoduleAttrsOption { default = [ ]; } {
-        pinnedApps = {
-          arcmenu = {
-            enable = mkBoolOption { default = false; };
-            list = mkStrListOption { default = [ ]; };
-          };
+      users =
+        let
+          inherit (users.username) pinnedApps;
+        in
+        mkSubmoduleAttrsOption { default = { }; } {
+          pinnedApps = {
+            arcmenu = {
+              enable = mkBoolOption { default = pinnedApps.arcmenu.enable; };
+              list = mkStrListOption { default = pinnedApps.arcmenu.list; };
+            };
 
-          shell = {
-            enable = mkBoolOption { default = false; };
-            list = mkStrListOption { default = [ ]; };
+            shell = {
+              enable = mkBoolOption { default = pinnedApps.shell.enable; };
+              list = mkStrListOption { default = pinnedApps.shell.list; };
+            };
           };
         };
-      };
     };
 
   outputs.nixosModules =
@@ -109,7 +124,7 @@ in
     optionalDependencies = [
       {
         url = "github:icedos/desktop";
-        modules = ["gdm"];
+        modules = [ "gdm" ];
       }
     ];
   };
