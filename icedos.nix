@@ -17,6 +17,7 @@ in
       inherit ((fromTOML (readFile ./config.toml)).icedos.desktop.gnome)
         accentColor
         clock
+        excludeDefaultPackages
         extensions
         hotCorners
         powerButtonAction
@@ -28,14 +29,16 @@ in
     {
       accentColor = mkStrOption { default = accentColor; };
 
-      extensions = {
-        arcmenu = mkBoolOption { default = extensions.arcmenu; };
-        dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
-      };
-
       clock = {
         date = mkBoolOption { default = clock.date; };
         weekday = mkBoolOption { default = clock.weekday; };
+      };
+
+      excludeDefaultPackages = mkStrListOption { default = excludeDefaultPackages; };
+
+      extensions = {
+        arcmenu = mkBoolOption { default = extensions.arcmenu; };
+        dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
       };
 
       hotCorners = mkBoolOption { default = hotCorners; };
@@ -71,6 +74,8 @@ in
     [
       (
         {
+          config,
+          icedosLib,
           lib,
           pkgs,
           ...
@@ -78,6 +83,7 @@ in
 
         let
           inherit (lib) attrNames filterAttrs;
+          inherit (icedosLib) pkgMapper;
 
           getModules =
             path:
@@ -91,29 +97,28 @@ in
           programs.dconf.enable = true;
           environment.systemPackages = [ pkgs.gnome-tweaks ];
 
-          environment.gnome.excludePackages = with pkgs; [
-            cheese # Camera
-            decibels # Audio player
-            eog # Image viewer
-            epiphany # Web browser
-            evince # Document viewer
-            geary # Email
-            gnome-browser-connector # Install gnome extensions from the browser
-            gnome-calendar # Calendar
-            gnome-characters # Emojis
-            gnome-console # Terminal
-            gnome-contacts # Contacts
-            gnome-font-viewer # Font viewer
-            gnome-maps # Maps
-            gnome-music # Music
-            gnome-software # Software center
-            gnome-system-monitor # System monitoring tool
-            gnome-text-editor # Text editor
-            gnome-tour # Greeter
-            simple-scan # Scanner
-            totem # Videos
-            yelp # Help
-          ];
+          environment.gnome.excludePackages =
+            with pkgs;
+            [
+              decibels # Audio player
+              epiphany # Web browser
+              gnome-calendar
+              gnome-characters # Emojis
+              gnome-console
+              gnome-contacts
+              gnome-font-viewer
+              gnome-maps
+              gnome-music
+              gnome-user-docs
+              gnome-software
+              gnome-system-monitor
+              gnome-tour
+              gnome-weather
+              nixos-render-docs
+              simple-scan
+              yelp # Help
+            ]
+            ++ (pkgMapper config.icedos.desktop.gnome.excludeDefaultPackages);
         }
       )
     ];

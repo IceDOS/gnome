@@ -1,5 +1,6 @@
 [icedos.desktop.gnome]
 accentColor = "purple" # Options: 'blue', 'teal', 'green', 'yellow', 'orange', 'red', 'pink', 'purple', 'slate'
+excludeDefaultPackages = []
 hotCorners = false
 powerButtonAction = "interactive"
 titlebarLayout = "appmenu:close" # Options: 'minimize', 'maximize', 'close', 'spacer'(adds space between buttons), ':'(left-center-right separator)
