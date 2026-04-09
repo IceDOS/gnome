@@ -118,7 +118,7 @@ in
               simple-scan
               yelp # Help
             ]
-            ++ (pkgMapper config.icedos.desktop.gnome.excludeDefaultPackages);
+            ++ (pkgMapper pkgs config.icedos.desktop.gnome.excludeDefaultPackages);
         }
       )
     ];
