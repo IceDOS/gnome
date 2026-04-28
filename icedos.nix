@@ -83,7 +83,7 @@ in
 
         let
           inherit (lib) attrNames filterAttrs;
-          inherit (icedosLib) pkgMapper;
+          inherit (icedosLib) genUserDefaults pkgMapper;
 
           getModules =
             path:
@@ -92,6 +92,10 @@ in
             );
         in
         {
+          icedos.desktop.gnome.users = genUserDefaults {
+            users = config.icedos.users;
+          };
+
           imports = getModules ./modules;
           services.desktopManager.gnome.enable = true;
           programs.dconf.enable = true;
