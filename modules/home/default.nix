@@ -89,6 +89,7 @@ in
             };
 
             "org/gnome/shell" = {
+              always-show-log-out = true;
               disable-user-extensions = false;
               enabled-extensions = [ "user-theme@gnome-shell-extensions.gcampax.github.com" ];
 
