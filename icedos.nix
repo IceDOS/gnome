@@ -21,7 +21,6 @@ in
         extensions
         hotCorners
         powerButtonAction
-        titlebarLayout
         users
         workspaces
         ;
@@ -43,7 +42,6 @@ in
 
       hotCorners = mkBoolOption { default = hotCorners; };
       powerButtonAction = mkStrOption { default = powerButtonAction; };
-      titlebarLayout = mkStrOption { default = titlebarLayout; };
 
       workspaces = {
         dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };

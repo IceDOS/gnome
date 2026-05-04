@@ -3,7 +3,6 @@ accentColor = "purple" # Options: 'blue', 'teal', 'green', 'yellow', 'orange', '
 excludeDefaultPackages = []
 hotCorners = false
 powerButtonAction = "interactive"
-titlebarLayout = "appmenu:close" # Options: 'minimize', 'maximize', 'close', 'spacer'(adds space between buttons), ':'(left-center-right separator)
 
 [icedos.desktop.gnome.extensions]
 arcmenu = false
