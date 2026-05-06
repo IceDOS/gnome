@@ -16,6 +16,11 @@ weekday = false # Show the day of the week on the clock
 dynamicWorkspaces = true
 maxWorkspaces = 1 # Determines the maximum number of workspaces when dynamic workspaces are disabled
 
+[icedos.desktop.gnome.slideshow]
+images = [] # Absolute paths; empty = no slideshow
+durationSeconds = 1800 # Per-image hold time
+transitionSeconds = 5 # Crossfade duration
+
 [icedos.desktop.gnome.users.username.pinnedApps.arcmenu]
 enable = false
 list = []

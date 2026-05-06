@@ -21,6 +21,7 @@ in
         extensions
         hotCorners
         powerButtonAction
+        slideshow
         users
         workspaces
         ;
@@ -42,6 +43,12 @@ in
 
       hotCorners = mkBoolOption { default = hotCorners; };
       powerButtonAction = mkStrOption { default = powerButtonAction; };
+
+      slideshow = {
+        images = mkStrListOption { default = slideshow.images; };
+        durationSeconds = mkNumberOption { default = slideshow.durationSeconds; };
+        transitionSeconds = mkNumberOption { default = slideshow.transitionSeconds; };
+      };
 
       workspaces = {
         dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };
