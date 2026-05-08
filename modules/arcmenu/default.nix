@@ -7,9 +7,9 @@
 }:
 let
   inherit (lib) mkIf;
-  cfg = config.icedos;
+  inherit (config.icedos.desktop) gnome;
 in
-mkIf (cfg.desktop.gnome.extensions.arcmenu) {
+mkIf gnome.extensions.arcmenu {
   environment.systemPackages = [ pkgs.gnomeExtensions.arcmenu ];
 
   home-manager.sharedModules = [
@@ -25,7 +25,7 @@ mkIf (cfg.desktop.gnome.extensions.arcmenu) {
           "org/gnome/shell/extensions/arcmenu" =
             let
               arcmenu = gnomeUser.pinnedApps.arcmenu;
-              gnomeUser = cfg.desktop.gnome.users.${config.home.username};
+              gnomeUser = gnome.users.${config.home.username};
             in
             {
               distro-icon = 6;

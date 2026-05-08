@@ -6,9 +6,9 @@
 }:
 let
   inherit (lib) mkIf;
-  cfg = config.icedos;
+  inherit (config.icedos.desktop.gnome.extensions) dashToPanel;
 in
-mkIf (cfg.desktop.gnome.extensions.dashToPanel) {
+mkIf dashToPanel {
   environment.systemPackages = [ pkgs.gnomeExtensions.dash-to-panel ];
 
   home-manager.sharedModules = [

@@ -6,7 +6,9 @@
 
 let
   inherit (lib) mkIf;
-  cfg = config.icedos;
+  inherit (config.icedos) desktop hardware;
+  inherit (desktop) gnome;
+  inherit (gnome) clock workspaces;
 in
 {
   home-manager.sharedModules = [
@@ -15,8 +17,8 @@ in
       {
         dconf.settings =
           let
-            idle = cfg.desktop.users.${config.home.username}.idle;
-            gnomeUser = cfg.desktop.gnome.users.${config.home.username};
+            idle = desktop.users.${config.home.username}.idle;
+            gnomeUser = gnome.users.${config.home.username};
           in
           {
             "org/gnome/desktop/input-sources" = {
@@ -25,13 +27,13 @@ in
             };
 
             "org/gnome/desktop/interface" = {
-              accent-color = cfg.desktop.gnome.accentColor;
+              accent-color = gnome.accentColor;
               color-scheme = "prefer-dark";
               clock-show-seconds = true;
-              clock-show-date = cfg.desktop.gnome.clock.date;
-              clock-show-weekday = cfg.desktop.gnome.clock.weekday;
-              show-battery-percentage = cfg.hardware.devices.laptop;
-              enable-hot-corners = cfg.desktop.gnome.hotCorners;
+              clock-show-date = clock.date;
+              clock-show-weekday = clock.weekday;
+              show-battery-percentage = hardware.devices.laptop;
+              enable-hot-corners = gnome.hotCorners;
             };
 
             # Disable lockscreen notifications
@@ -40,7 +42,7 @@ in
             };
 
             "org/gnome/desktop/wm/preferences" = {
-              num-workspaces = toString (cfg.desktop.gnome.workspaces.maxWorkspaces);
+              num-workspaces = toString workspaces.maxWorkspaces;
             };
 
             # Disable mouse acceleration
@@ -74,7 +76,7 @@ in
               edge-tiling = true;
               # Enable fractional scaling
               experimental-features = [ "scale-monitor-framebuffer" ];
-              dynamic-workspaces = cfg.desktop.gnome.workspaces.dynamicWorkspaces;
+              dynamic-workspaces = workspaces.dynamicWorkspaces;
             };
 
             "org/gnome/settings-daemon/plugins/power" = {
@@ -83,7 +85,7 @@ in
               # Auto suspend timeout
               sleep-inactive-ac-timeout = toString (idle.suspend.seconds);
               # Power button shutdown
-              power-button-action = cfg.desktop.gnome.powerButtonAction;
+              power-button-action = gnome.powerButtonAction;
             };
 
             "org/gnome/shell" = {

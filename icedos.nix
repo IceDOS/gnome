@@ -90,6 +90,8 @@ in
           inherit (lib) attrNames filterAttrs;
           inherit (icedosLib.pkgs) mapper;
           inherit (icedosLib.users) genDefaults;
+          inherit (config) icedos;
+          inherit (icedos) users;
 
           getModules =
             path:
@@ -99,7 +101,7 @@ in
         in
         {
           icedos.desktop.gnome.users = genDefaults {
-            users = config.icedos.users;
+            inherit users;
           };
 
           imports = getModules ./modules;
@@ -128,7 +130,7 @@ in
               simple-scan
               yelp # Help
             ]
-            ++ (mapper pkgs config.icedos.desktop.gnome.excludeDefaultPackages);
+            ++ (mapper pkgs icedos.desktop.gnome.excludeDefaultPackages);
         }
       )
     ];

@@ -17,13 +17,14 @@ let
     removePrefix
     ;
 
-  globalWallpaper = config.icedos.desktop.wallpaper;
+  inherit (config.icedos) desktop;
+  inherit (desktop.gnome) slideshow;
+
+  globalWallpaper = desktop.wallpaper;
   isColor = hasPrefix "color:" globalWallpaper;
   isPath = !isColor && globalWallpaper != "";
   gnomeWallpaper = removePrefix "path:" globalWallpaper;
   colorHex = removePrefix "color:" globalWallpaper;
-
-  slideshow = config.icedos.desktop.gnome.slideshow;
   imgs = slideshow.images;
   hasSlideshow = (length imgs) > 0;
 
