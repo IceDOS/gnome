@@ -1,5 +1,4 @@
 [icedos.desktop.gnome]
-accentColor = "purple" # Options: 'blue', 'teal', 'green', 'yellow', 'orange', 'red', 'pink', 'purple', 'slate'
 excludeDefaultPackages = []
 hotCorners = false
 powerButtonAction = "interactive"

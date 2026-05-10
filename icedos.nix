@@ -15,7 +15,6 @@ in
       inherit (lib) readFile;
 
       inherit ((fromTOML (readFile ./config.toml)).icedos.desktop.gnome)
-        accentColor
         clock
         excludeDefaultPackages
         extensions
@@ -27,8 +26,6 @@ in
         ;
     in
     {
-      accentColor = mkStrOption { default = accentColor; };
-
       clock = {
         date = mkBoolOption { default = clock.date; };
         weekday = mkBoolOption { default = clock.weekday; };
@@ -81,23 +78,16 @@ in
         {
           config,
           icedosLib,
-          lib,
           pkgs,
           ...
         }:
 
         let
-          inherit (lib) attrNames filterAttrs;
+          inherit (icedosLib) getModules;
           inherit (icedosLib.pkgs) mapper;
           inherit (icedosLib.users) genDefaults;
           inherit (config) icedos;
           inherit (icedos) users;
-
-          getModules =
-            path:
-            map (dir: ./. + ("/modules/" + dir)) (
-              attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir path))
-            );
         in
         {
           icedos.desktop.gnome.users = genDefaults {

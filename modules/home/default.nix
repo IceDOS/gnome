@@ -1,5 +1,6 @@
 {
   config,
+  icedosLib,
   lib,
   ...
 }:
@@ -9,6 +10,8 @@ let
   inherit (config.icedos) desktop hardware;
   inherit (desktop) gnome;
   inherit (gnome) clock workspaces;
+
+  resolved = icedosLib.generateAccent config;
 in
 {
   home-manager.sharedModules = [
@@ -27,7 +30,7 @@ in
             };
 
             "org/gnome/desktop/interface" = {
-              accent-color = gnome.accentColor;
+              accent-color = resolved.name;
               color-scheme = "prefer-dark";
               clock-show-seconds = true;
               clock-show-date = clock.date;
