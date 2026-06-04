@@ -15,7 +15,6 @@ in
       inherit (lib) readFile;
 
       inherit ((fromTOML (readFile ./config.toml)).icedos.desktop.gnome)
-        clock
         excludeDefaultPackages
         extensions
         hotCorners
@@ -26,11 +25,6 @@ in
         ;
     in
     {
-      clock = {
-        date = mkBoolOption { default = clock.date; };
-        weekday = mkBoolOption { default = clock.weekday; };
-      };
-
       excludeDefaultPackages = mkStrListOption { default = excludeDefaultPackages; };
 
       extensions = {

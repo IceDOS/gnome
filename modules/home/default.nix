@@ -8,8 +8,8 @@
 let
   inherit (lib) mkIf;
   inherit (config.icedos) desktop hardware;
-  inherit (desktop) gnome;
-  inherit (gnome) clock workspaces;
+  inherit (desktop) clock gnome;
+  inherit (gnome) workspaces;
 
   resolved = icedosLib.generateAccent config;
 in
@@ -32,7 +32,8 @@ in
             "org/gnome/desktop/interface" = {
               accent-color = resolved.name;
               color-scheme = "prefer-dark";
-              clock-show-seconds = true;
+              clock-format = if clock.hourFormat24 then "24h" else "12h";
+              clock-show-seconds = clock.seconds;
               clock-show-date = clock.date;
               clock-show-weekday = clock.weekday;
               show-battery-percentage = hardware.devices.laptop;
@@ -45,6 +46,7 @@ in
             };
 
             "org/gnome/desktop/wm/preferences" = {
+              focus-mode = if desktop.windows.focus.followsMouse then "sloppy" else "click";
               num-workspaces = toString workspaces.maxWorkspaces;
             };
 
