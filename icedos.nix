@@ -10,59 +10,63 @@ let
     ;
 in
 {
-  options.icedos.desktop.gnome =
+  options.icedos.desktop =
     let
       inherit (lib) readFile;
 
-      inherit ((fromTOML (readFile ./config.toml)).icedos.desktop.gnome)
+      desktopCfg = (fromTOML (readFile ./config.toml)).icedos.desktop;
+
+      inherit (desktopCfg.gnome)
         excludeDefaultPackages
         extensions
         hotCorners
         powerButtonAction
         slideshow
-        users
         workspaces
         ;
+
+      inherit (desktopCfg.users.username.gnome) pinnedApps;
     in
     {
-      excludeDefaultPackages = mkStrListOption { default = excludeDefaultPackages; };
+      gnome = {
+        excludeDefaultPackages = mkStrListOption { default = excludeDefaultPackages; };
 
-      extensions = {
-        arcmenu = mkBoolOption { default = extensions.arcmenu; };
-        dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
+        extensions = {
+          arcmenu = mkBoolOption { default = extensions.arcmenu; };
+          dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
+        };
+
+        hotCorners = mkBoolOption { default = hotCorners; };
+        powerButtonAction = mkStrOption { default = powerButtonAction; };
+
+        slideshow = {
+          images = mkStrListOption { default = slideshow.images; };
+          durationSeconds = mkNumberOption { default = slideshow.durationSeconds; };
+          transitionSeconds = mkNumberOption { default = slideshow.transitionSeconds; };
+        };
+
+        workspaces = {
+          dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };
+          maxWorkspaces = mkNumberOption { default = workspaces.maxWorkspaces; };
+        };
       };
 
-      hotCorners = mkBoolOption { default = hotCorners; };
-      powerButtonAction = mkStrOption { default = powerButtonAction; };
+      # Contributes `gnome` to the desktop per-user submodule (declared in
+      # icedos/desktop). Module-merge means gnome per-user config lives at
+      # icedos.desktop.users.<name>.gnome and materialises via desktop's genDefaults.
+      users = mkSubmoduleAttrsOption { default = { }; } {
+        gnome.pinnedApps = {
+          arcmenu = {
+            enable = mkBoolOption { default = pinnedApps.arcmenu.enable; };
+            list = mkStrListOption { default = pinnedApps.arcmenu.list; };
+          };
 
-      slideshow = {
-        images = mkStrListOption { default = slideshow.images; };
-        durationSeconds = mkNumberOption { default = slideshow.durationSeconds; };
-        transitionSeconds = mkNumberOption { default = slideshow.transitionSeconds; };
-      };
-
-      workspaces = {
-        dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };
-        maxWorkspaces = mkNumberOption { default = workspaces.maxWorkspaces; };
-      };
-
-      users =
-        let
-          inherit (users.username) pinnedApps;
-        in
-        mkSubmoduleAttrsOption { default = { }; } {
-          pinnedApps = {
-            arcmenu = {
-              enable = mkBoolOption { default = pinnedApps.arcmenu.enable; };
-              list = mkStrListOption { default = pinnedApps.arcmenu.list; };
-            };
-
-            shell = {
-              enable = mkBoolOption { default = pinnedApps.shell.enable; };
-              list = mkStrListOption { default = pinnedApps.shell.list; };
-            };
+          shell = {
+            enable = mkBoolOption { default = pinnedApps.shell.enable; };
+            list = mkStrListOption { default = pinnedApps.shell.list; };
           };
         };
+      };
     };
 
   outputs.nixosModules =
@@ -79,15 +83,9 @@ in
         let
           inherit (icedosLib) getModules;
           inherit (icedosLib.pkgs) mapper;
-          inherit (icedosLib.users) genDefaults;
           inherit (config) icedos;
-          inherit (icedos) users;
         in
         {
-          icedos.desktop.gnome.users = genDefaults {
-            inherit users;
-          };
-
           imports = getModules ./modules;
           services.desktopManager.gnome.enable = true;
           programs.dconf.enable = true;

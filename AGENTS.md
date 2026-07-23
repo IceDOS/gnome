@@ -36,6 +36,10 @@ checkout (`path:/abs/path/to/gnome`), then `icedos rebuild --build` (no activati
 Live desktop changes only appear after a `switch` and re-login — the **user's** call.
 
 ## Notable modules / gotchas
+- **Per-user config nests under the shared desktop user submodule**, not a gnome-owned
+  `.users` tree: pinned apps live at `icedos.desktop.users.<name>.gnome.pinnedApps`
+  (materialised by `desktop/default`'s `genDefaults`). The root `icedos.nix` contributes
+  the nested `gnome` sub-option to `desktop.users`. See core's *Per-user (`users`) options*.
 - Extensions wired via `extensions.{arcmenu,dashToPanel}`; `appindicator` for tray.
 - DE/session changes typically require a re-login to take effect; validate with
   `--build` first.

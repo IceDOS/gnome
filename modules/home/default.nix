@@ -21,7 +21,7 @@ in
         dconf.settings =
           let
             idle = desktop.users.${config.home.username}.idle;
-            gnomeUser = gnome.users.${config.home.username};
+            gnomeUser = desktop.users.${config.home.username}.gnome;
           in
           {
             "org/gnome/desktop/input-sources" = {
