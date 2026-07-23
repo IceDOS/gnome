@@ -25,7 +25,7 @@ mkIf gnome.extensions.arcmenu {
 
           "org/gnome/shell/extensions/arcmenu" =
             let
-              arcmenu = gnomeUser.pinnedApps.arcmenu;
+              arcmenu = gnomeUser.pinned-apps.arcmenu;
               gnomeUser = desktop.users.${config.home.username}.gnome;
             in
             {

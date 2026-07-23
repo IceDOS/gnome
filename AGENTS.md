@@ -37,7 +37,7 @@ Live desktop changes only appear after a `switch` and re-login — the **user's*
 
 ## Notable modules / gotchas
 - **Per-user config nests under the shared desktop user submodule**, not a gnome-owned
-  `.users` tree: pinned apps live at `icedos.desktop.users.<name>.gnome.pinnedApps`
+  `.users` tree: pinned apps live at `icedos.desktop.users.<name>.gnome.pinned-apps`
   (materialised by `desktop/default`'s `genDefaults`). The root `icedos.nix` contributes
   the nested `gnome` sub-option to `desktop.users`. See core's *Per-user (`users`) options*.
 - Extensions wired via `extensions.{arcmenu,dashToPanel}`; `appindicator` for tray.

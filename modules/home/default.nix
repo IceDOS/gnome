@@ -62,7 +62,7 @@ in
 
             # Turn off screen
             "org/gnome/desktop/session" = {
-              idle-delay = if (idle.disableMonitors.enable) then toString (idle.disableMonitors.seconds) else 0;
+              idle-delay = if (idle.disable-monitors.enable) then toString (idle.disable-monitors.seconds) else 0;
             };
 
             # Set screen lock
@@ -98,7 +98,7 @@ in
               disable-user-extensions = false;
               enabled-extensions = [ "user-theme@gnome-shell-extensions.gcampax.github.com" ];
 
-              favorite-apps = mkIf (gnomeUser.pinnedApps.shell.enable) gnomeUser.pinnedApps.shell.list;
+              favorite-apps = mkIf (gnomeUser.pinned-apps.shell.enable) gnomeUser.pinned-apps.shell.list;
             };
 
             "org/gnome/shell/keybindings" = {

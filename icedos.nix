@@ -10,6 +10,11 @@ let
     ;
 in
 {
+  # DE-wide gnome options plus a nested `gnome` contribution to the shared desktop
+  # per-user submodule (`icedos.desktop.users`, declared/materialised in the desktop
+  # repo). The `users` child declaration MUST omit `default` — only desktop/default
+  # (mkUsersOption) sets `default = {}`; two defaulted `attrsOf submodule` decls of
+  # the same path fail to type-merge.
   options.icedos.desktop =
     let
       inherit (lib) readFile;
@@ -25,7 +30,7 @@ in
         workspaces
         ;
 
-      inherit (desktopCfg.users.username.gnome) pinnedApps;
+      inherit (desktopCfg.users.username.gnome) pinned-apps;
     in
     {
       gnome = {
@@ -51,19 +56,16 @@ in
         };
       };
 
-      # Contributes `gnome` to the desktop per-user submodule (declared in
-      # icedos/desktop). Module-merge means gnome per-user config lives at
-      # icedos.desktop.users.<name>.gnome and materialises via desktop's genDefaults.
-      users = mkSubmoduleAttrsOption { default = { }; } {
-        gnome.pinnedApps = {
+      users = mkSubmoduleAttrsOption { } {
+        gnome.pinned-apps = {
           arcmenu = {
-            enable = mkBoolOption { default = pinnedApps.arcmenu.enable; };
-            list = mkStrListOption { default = pinnedApps.arcmenu.list; };
+            enable = mkBoolOption { default = pinned-apps.arcmenu.enable; };
+            list = mkStrListOption { default = pinned-apps.arcmenu.list; };
           };
 
           shell = {
-            enable = mkBoolOption { default = pinnedApps.shell.enable; };
-            list = mkStrListOption { default = pinnedApps.shell.list; };
+            enable = mkBoolOption { default = pinned-apps.shell.enable; };
+            list = mkStrListOption { default = pinned-apps.shell.list; };
           };
         };
       };
