@@ -17,9 +17,9 @@ in
   # the same path fail to type-merge.
   options.icedos.desktop =
     let
-      inherit (lib) readFile;
+      inherit (lib) importTOML;
 
-      desktopCfg = (fromTOML (readFile ./config.toml)).icedos.desktop;
+      desktopCfg = (importTOML ./config.toml).icedos.desktop;
 
       inherit (desktopCfg.gnome)
         excludeDefaultPackages
