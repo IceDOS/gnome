@@ -2,6 +2,7 @@
   config,
   icedosLib,
   lib,
+  pkgs,
   ...
 }:
 
@@ -14,6 +15,8 @@ let
   resolved = icedosLib.generateAccent config;
 in
 {
+  environment.systemPackages = [ pkgs.gnomeExtensions.user-themes ];
+
   home-manager.sharedModules = [
     (
       { config, ... }:

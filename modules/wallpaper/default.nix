@@ -9,6 +9,7 @@ let
   inherit (lib)
     concatMapStrings
     elemAt
+    escapeXML
     hasPrefix
     imap0
     length
@@ -24,7 +25,8 @@ let
   isColor = hasPrefix "color:" globalWallpaper;
   isPath = !isColor && globalWallpaper != "";
   gnomeWallpaper = removePrefix "path:" globalWallpaper;
-  colorHex = removePrefix "color:" globalWallpaper;
+  colorHex = removePrefix "#" (removePrefix "color:" globalWallpaper);
+  isHexColor = builtins.match "[0-9a-fA-F]{6}" colorHex != null;
   imgs = slideshow.images;
   hasSlideshow = (length imgs) > 0;
 
@@ -36,8 +38,8 @@ let
   }) imgs;
 
   segment = p: ''
-    <static><duration>${toString slideshow.durationSeconds}.0</duration><file>${p.from}</file></static>
-    <transition type="overlay"><duration>${toString slideshow.transitionSeconds}.0</duration><from>${p.from}</from><to>${p.to}</to></transition>
+    <static><duration>${toString slideshow.durationSeconds}</duration><file>${escapeXML p.from}</file></static>
+    <transition type="overlay"><duration>${toString slideshow.transitionSeconds}</duration><from>${escapeXML p.from}</from><to>${escapeXML p.to}</to></transition>
   '';
 
   xml = ''
@@ -50,6 +52,13 @@ let
   slideshowFile = pkgs.writeText "icedos-gnome-slideshow.xml" xml;
 in
 {
+  assertions = [
+    {
+      assertion = !isColor || isHexColor;
+      message = "icedos.desktop.gnome.wallpaper: invalid color '${globalWallpaper}' — expected 'color:#RRGGBB' or 'color:RRGGBB'";
+    }
+  ];
+
   home-manager.sharedModules = [
     (mkIf hasSlideshow {
       dconf.settings."org/gnome/desktop/background" = {

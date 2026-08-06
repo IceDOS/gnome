@@ -4,6 +4,7 @@ hotCorners = false
 powerButtonAction = "interactive"
 
 [icedos.desktop.gnome.extensions]
+appindicator = false
 arcmenu = false
 dashToPanel = false
 

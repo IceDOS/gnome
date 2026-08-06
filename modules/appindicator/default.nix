@@ -1,6 +1,15 @@
-{ pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  inherit (lib) mkIf;
+  inherit (config.icedos.desktop.gnome.extensions) appindicator;
+in
+mkIf appindicator {
   environment.systemPackages = [
     pkgs.gnomeExtensions.appindicator
   ];

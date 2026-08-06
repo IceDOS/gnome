@@ -3,9 +3,10 @@
 let
   inherit (icedosLib)
     mkBoolOption
-    mkNumberOption
+    mkEnumOption
+    mkFloatBetweenOption
+    mkIntBetweenOption
     mkStrListOption
-    mkStrOption
     mkSubmoduleAttrsOption
     ;
 in
@@ -37,22 +38,51 @@ in
         excludeDefaultPackages = mkStrListOption { default = excludeDefaultPackages; };
 
         extensions = {
+          appindicator = mkBoolOption { default = extensions.appindicator; };
           arcmenu = mkBoolOption { default = extensions.arcmenu; };
           dashToPanel = mkBoolOption { default = extensions.dashToPanel; };
         };
 
         hotCorners = mkBoolOption { default = hotCorners; };
-        powerButtonAction = mkStrOption { default = powerButtonAction; };
+
+        powerButtonAction =
+          mkEnumOption
+            {
+              path = "icedos.desktop.gnome.powerButtonAction";
+              source = ./config.toml;
+              default = powerButtonAction;
+            }
+            [
+              "nothing"
+              "suspend"
+              "hibernate"
+              "interactive"
+            ];
 
         slideshow = {
           images = mkStrListOption { default = slideshow.images; };
-          durationSeconds = mkNumberOption { default = slideshow.durationSeconds; };
-          transitionSeconds = mkNumberOption { default = slideshow.transitionSeconds; };
+
+          durationSeconds = mkFloatBetweenOption {
+            path = "icedos.desktop.gnome.slideshow.durationSeconds";
+            source = ./config.toml;
+            default = slideshow.durationSeconds;
+          } 1 86400;
+
+          transitionSeconds = mkFloatBetweenOption {
+            path = "icedos.desktop.gnome.slideshow.transitionSeconds";
+            source = ./config.toml;
+            default = slideshow.transitionSeconds;
+          } 0 60;
         };
 
         workspaces = {
           dynamicWorkspaces = mkBoolOption { default = workspaces.dynamicWorkspaces; };
-          maxWorkspaces = mkNumberOption { default = workspaces.maxWorkspaces; };
+
+          maxWorkspaces = mkIntBetweenOption {
+            path = "icedos.desktop.gnome.workspaces.maxWorkspaces";
+            source = ./config.toml;
+            default = workspaces.maxWorkspaces;
+          } 1 36;
         };
       };
 
@@ -91,7 +121,6 @@ in
           imports = getModules ./modules;
           services.desktopManager.gnome.enable = true;
           programs.dconf.enable = true;
-          environment.systemPackages = [ pkgs.gnome-tweaks ];
 
           environment.gnome.excludePackages =
             with pkgs;
@@ -121,6 +150,13 @@ in
 
   meta = {
     name = "default";
+
+    dependencies = [
+      {
+        url = "github:icedos/hardware";
+        modules = [ ];
+      }
+    ];
 
     optionalDependencies = [
       {
