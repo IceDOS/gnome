@@ -156,9 +156,7 @@ in
         url = "github:icedos/hardware";
         modules = [ ];
       }
-    ];
 
-    optionalDependencies = [
       {
         url = "github:icedos/desktop";
         modules = [ "gdm" ];
